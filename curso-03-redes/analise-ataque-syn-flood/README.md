@@ -22,12 +22,44 @@ Para compreender este incidente, é necessário analisar como funciona o aperto 
 
 ---
 
+### 📊 Análise dos Logs no Microsoft Excel
+
+Como parte da investigação, os registros de tráfego foram exportados e analisados em formato de planilha para facilitar a identificação e categorização das anomalias de rede por cores (Verde: tráfego normal; Vermelho: atividade do ataque; Amarelo: falhas de conexão):
+
+![Logs do Wireshark](logs-wireshark.png)
+
+<details>
+<summary>🔍 Clique aqui para visualizar o registro bruto completo extraído (CSV)</summary>
+
+```text
+No.,Time,Source,Destination ,Protocol,Info
+47,3.144521,198.51.100.23,192.0.2.1,TCP,42584->443 [SYN] Seq=0 Win-5792 Len=120...
+48,3.195755,192.0.2.1,198.51.100.23,TCP,"443->42584 [SYN, ACK] Seq=0 Win-5792 Len=120..."
+49,3.246989,198.51.100.23,192.0.2.1,TCP,42584->443 [ACK] Seq=1 Win-5792 Len=120...
+50,3.298223,198.51.100.23,192.0.2.1,HTTP ,GET  /sales.html HTTP/1.1
+51,3.349457,192.0.2.1,198.51.100.23,HTTP ,HTTP/1.1 200 OK (text/html)
+red,52,3.390692,203.0.113.0,192.0.2.1,TCP,54770->443 [SYN] Seq=0 Win=5792 Len=0...
+red,53,3.441926,192.0.2.1,203.0.113.0,TCP,"443->54770 [SYN, ACK] Seq=0 Win-5792 Len=120..."
+red,54,3.49316,203.0.113.0,192.0.2.1,TCP,54770->443 [ACK Seq=1 Win=5792 Len=0...
+green,55,3.544394,198.51.100.14,192.0.2.1,TCP,14785->443 [SYN] Seq=0 Win-5792 Len=120...
+green,56,3.599628,192.0.2.1,198.51.100.14,TCP,"443->14785 [SYN, ACK] Seq=0 Win-5792 Len=120..."
+red,57,3.664863,203.0.113.0,192.0.2.1,TCP,54770->443 [SYN] Seq=0 Win=5792 Len=0...
+green,58,3.7300969999999998,198.51.100.14,192.0.2.1,TCP,14785->443 [ACK] Seq=1 Win-5792 Len=120...
+red,59,3.7953319999999997,203.0.113.0,192.0.2.1,TCP,54770->443 [SYN] Seq=0 Win-5792 Len=120...
+green,60,3.8605669999999996,198.51.100.14,192.0.2.1,HTTP ,GET  /sales.html HTTP/1.1
+red,61,3.9394989999999996,203.0.113.0,192.0.2.1,TCP,54770->443 [SYN] Seq=0 Win-5792 Len=120...
+green,62,4.018431,192.0.2.1,198.51.100.14,HTTP ,HTTP/1.1 200 OK (text/html)
+```
+</details>
+
+---
+
 ## 📝 Relatório de Incidente Preenchido
 
 ### Seção 1: Identificação do tipo de ataque que está causando a interrupção da rede
 
 *   **Tipo de ataque identificado:** Trata-se de um ataque de **Negação de Serviço Direto (DoS - Denial of Service)** do tipo **SYN Flood**.
-*   **Diferença entre DoS e DDoS:** Um ataque DoS direto se origina de uma **única fonte** (um único endereço IP), exatamente como observado neste log (IP `203.0.113.0`). Um ataque DDoS (Distribuído) utilizaria múltiplos IPs de origens diferentes espalhados pelo mundo, o que tornaria o bloqueio muito mais difícil.
+*   **Diferença entre DoS e DDoS:** Um ataque DoS direto se origina de uma **única fonte** (um único endereço IP), exatamente como observado neste log (IP `203.0.113.0`). Um ataque DDoS (Distribuído) utilizaria múltiplos IPs de origens diferentes espalhados pelo mundo.
 *   **Tendências e Padrões observados nos logs:** 
     *   No início (itens 47 a 51), conexões legítimas de funcionários (`198.51.100.23`) funcionavam normalmente.
     *   A partir do item 52, o IP malicioso `203.0.113.0` começa a inundar a porta **443** (HTTPS) do servidor com pacotes `[SYN]` em intervalos de milissegundos.
@@ -37,8 +69,8 @@ Para compreender este incidente, é necessário analisar como funciona o aperto 
 
 ### Seção 2: Explicação de como o ataque afeta o mau funcionamento do site e impactos
 
-*   **Como o ataque afetou a rede e o site:** O volume anormal de pacotes `[SYN]` inundou a tabela de conexões pendentes do servidor da Web. Como o atacante nunca envia o pacote `[ACK]` final para concluir o aperto de mão, as conexões legítimas dos funcionários e clientes entram em filas de espera até estourarem o tempo limite (*timeout*). Isso indisponibilizou completamente o acesso à página de vendas.
-*   **Consequências negativas para a organização:** Como a empresa é uma agência de publicidade que depende do site para divulgar pacotes de férias, promoções e vendas, a queda do servidor impede os funcionários de trabalhar e bloqueia as compras dos clientes, gerando **perda financeira imediata** e **danos à reputação da marca**.
+*   **Como o ataque afetou a rede e o site:** O volume anormal de pacotes `[SYN]` inundou a tabela de conexões pendentes do servidor da Web. Como o atacante nunca envia o pacote `[ACK]` final para concluir o aperto de mão, as conexões legítimas entram em filas de espera até estourarem o tempo limite (*timeout*). Isso indisponibilizou completamente o acesso à página de vendas.
+*   **Consequências negativas para a organização:** Como a empresa é uma agência de publicidade que depende do site para divulgar promoções e vendas, a queda do servidor impede os funcionários de trabalhar e bloqueia as compras dos clientes, gerando **perda financeira imediata** e **danos à reputação da marca**.
 *   **Ações imediatas de contenção aplicadas:** O servidor foi temporariamente colocado off-line para liberar a memória sobrecarregada e recuperar o status operacional. Além disso, uma regra de bloqueio do IP do atacante (`203.0.113.0`) foi configurada no firewall da empresa.
 
 ---
@@ -47,4 +79,8 @@ Para compreender este incidente, é necessário analisar como funciona o aperto 
 
 1.  **Identificar o SYN Flood:** Aprendi a identificar visualmente um ataque de inundação de conexões através da repetição exaustiva de sinalizações `[SYN]` vindas de um mesmo endereço.
 2.  **Impacto nos usuários:** Compreendi como falhas de rede se traduzem em erros reais na tela do usuário, associando os pacotes `[RST, ACK]` e erros de *Gateway Time-out* à exaustão de recursos do servidor.
-3.  **Fragilidade da mitigação simples:** Entendi que bloquear apenas um IP no firewall é uma solução temporária, já que atacantes avançados podem realizar *IP spoofing* (falsificação de IP) ou evoluir a ação para um ataque distribuído (DDoS).
+3.  **Fragilidade da mitigação simples:** Entendi que bloquear apenas um IP no firewall é uma solução temporária, já que atacantes avançados podem realizar *IP spoofing* (falsificação de IP).
+
+---
+📬 **Gostou do projeto? Vamos nos conectar!**
+* https://www.linkedin.com/in/michael-hernandes-rodrigues-4b092b283/
