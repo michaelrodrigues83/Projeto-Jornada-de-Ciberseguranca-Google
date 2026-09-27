@@ -1,6 +1,6 @@
 # Relatório de Incidente de Segurança Cibernética: Análise de Tráfego de Rede
 
-> 🎓 **Nota de Contexto:** Laboratório prático desenvolvido como parte do **Subcurso 3 (Conectar e Proteger: Redes em Segurança Cibernética)** do programa **Google Cybersecurity Professional Certificate**. O objetivo da atividade é simular a atuação de um analista de segurança na triagem de incidentes, análise de pacotes de rede e documentação técnica.
+> 🎓 **Nota de Contexto:** Laboratório prático desenvolvido como parte do **Curso 3 Connect and Protect: Networks and Network Security (Conectar e Proteger: Redes em Segurança Cibernética)** do programa **Google Cybersecurity Professional Certificate**. O objetivo da atividade é simular a atuação de um analista de segurança na triagem de incidentes, análise de pacotes de rede e documentação técnica.
 
 ---
 
