@@ -41,3 +41,16 @@ Abaixo está o registro bruto analisado durante a triagem do incidente:
 *   **Explique as ações tomadas pelo departamento de TI para investigar o incidente:** Um analista de segurança cibernética testou o acesso ao site, confirmou o erro e utilizou a ferramenta `tcpdump` para capturar e inspecionar os pacotes de rede enquanto simulava o acesso.
 *   **Observe as principais descobertas da investigação do departamento de TI:** Os registros mostram um padrão claro: toda vez que o cliente envia uma consulta UDP para o servidor DNS (`203.0.113.2.domain`), o servidor retorna imediatamente uma resposta ICMP informando `udp port 53 unreachable`. Isso prova que o servidor está ativo na rede, mas rejeita os pacotes direcionados à sua porta de serviço DNS.
 *   **Observe uma causa provável para o incidente:** A causa mais provável é uma **falha ou má configuração no software do servidor DNS**, fazendo com que o serviço na porta 53 parasse de funcionar. Outras causas possíveis incluem uma alteração recente de regras no firewall bloqueando a porta 53 ou um ataque de Negação de Serviço (DoS) que derrubou o serviço DNS.
+
+
+---
+
+## 🧠 O que eu aprendi com este laboratório
+
+Como estudante de segurança cibernética, este exercício prático me ajudou a fixar conceitos fundamentais na prática:
+
+1. **A importância dos logs:** Aprendi a ler a estrutura básica de um log do `tcpdump`, identificando quem é o IP de origem (quem pede ajuda) e o IP de destino (quem responde).
+2. **Como os protocolos conversam:** Consegui ver na prática o comportamento do protocolo UDP (usado para tentar achar o site pelo DNS) e como o ICMP funciona como uma "mensagem de aviso" quando algo dá errado na rede.
+3. **Visão de Resolução:** Entendi que o erro `port 53 unreachable` significa que o caminho da rede até o servidor funciona, mas o serviço de DNS especificamente não quis ou não pôde responder (seja porque o servidor travou ou porque um firewall bloqueou a porta 53).
+
+Este laboratório me deu muito mais confiança para começar a entender como funciona o tráfego de redes e como investigar os primeiros problemas de conectividade!
