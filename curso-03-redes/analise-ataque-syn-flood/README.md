@@ -22,34 +22,32 @@ Para compreender este incidente, é necessário analisar como funciona o aperto 
 
 ---
 
-### 📊 Análise dos Logs no Microsoft Excel
+### 📊 Análise dos Logs com Microsoft Excel
 
-Como parte da investigação, os registros de tráfego foram exportados e analisados em formato de planilha para facilitar a identificação e categorização das anomalias de rede por cores (Verde: tráfego normal; Vermelho: atividade do ataque; Amarelo: falhas de conexão):
-
-![Logs do Wireshark](logs-wireshark.png)
+Os registros de tráfego foram exportados e analisados em formato de planilha para facilitar a identificação das anomalias de rede. Você pode conferir os dados estruturados no bloco expansível abaixo:
 
 <details>
-<summary>🔍 Clique aqui para visualizar o registro bruto completo extraído (CSV)</summary>
+<summary>🔍 Clique aqui para visualizar a tabela de logs extraída</summary>
 
-```
-No.,Time,Source,Destination ,Protocol,Info
-47,3.144521,198.51.100.23,192.0.2.1,TCP,42584->443 [SYN] Seq=0 Win-5792 Len=120...
-48,3.195755,192.0.2.1,198.51.100.23,TCP,"443->42584 [SYN, ACK] Seq=0 Win-5792 Len=120..."
-49,3.246989,198.51.100.23,192.0.2.1,TCP,42584->443 [ACK] Seq=1 Win-5792 Len=120...
-50,3.298223,198.51.100.23,192.0.2.1,HTTP ,GET  /sales.html HTTP/1.1
-51,3.349457,192.0.2.1,198.51.100.23,HTTP ,HTTP/1.1 200 OK (text/html)
-red,52,3.390692,203.0.113.0,192.0.2.1,TCP,54770->443 [SYN] Seq=0 Win=5792 Len=0...
-red,53,3.441926,192.0.2.1,203.0.113.0,TCP,"443->54770 [SYN, ACK] Seq=0 Win-5792 Len=120..."
-red,54,3.49316,203.0.113.0,192.0.2.1,TCP,54770->443 [ACK Seq=1 Win=5792 Len=0...
-green,55,3.544394,198.51.100.14,192.0.2.1,TCP,14785->443 [SYN] Seq=0 Win-5792 Len=120...
-green,56,3.599628,192.0.2.1,198.51.100.14,TCP,"443->14785 [SYN, ACK] Seq=0 Win-5792 Len=120..."
-red,57,3.664863,203.0.113.0,192.0.2.1,TCP,54770->443 [SYN] Seq=0 Win=5792 Len=0...
-green,58,3.7300969999999998,198.51.100.14,192.0.2.1,TCP,14785->443 [ACK] Seq=1 Win-5792 Len=120...
-red,59,3.7953319999999997,203.0.113.0,192.0.2.1,TCP,54770->443 [SYN] Seq=0 Win-5792 Len=120...
-green,60,3.8605669999999996,198.51.100.14,192.0.2.1,HTTP ,GET  /sales.html HTTP/1.1
-red,61,3.9394989999999996,203.0.113.0,192.0.2.1,TCP,54770->443 [SYN] Seq=0 Win-5792 Len=120...
-green,62,4.018431,192.0.2.1,198.51.100.14,HTTP ,HTTP/1.1 200 OK (text/html)
-```
+| No. | Time | Source | Destination | Protocol | Info |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **47** | 3.144521 | 198.51.100.23 | 192.0.2.1 | TCP | 42584 -> 443 [SYN] Seq=0 Win=5792 Len=120 |
+| **48** | 3.195755 | 192.0.2.1 | 198.51.100.23 | TCP | 443 -> 42584 [SYN, ACK] Seq=0 Win=5792 Len=120 |
+| **49** | 3.246989 | 198.51.100.23 | 192.0.2.1 | TCP | 42584 -> 443 [ACK] Seq=1 Win=5792 Len=120 |
+| **50** | 3.298223 | 198.51.100.23 | 192.0.2.1 | HTTP | GET /sales.html HTTP/1.1 |
+| **51** | 3.349457 | 192.0.2.1 | 198.51.100.23 | HTTP | HTTP/1.1 200 OK (text/html) |
+| <span style="color:red">**52**</span> | 3.390692 | 203.0.113.0 | 192.0.2.1 | TCP | 54770 -> 443 [SYN] Seq=0 Win=5792 Len=0 |
+| <span style="color:red">**53**</span> | 3.441926 | 192.0.2.1 | 203.0.113.0 | TCP | 443 -> 54770 [SYN, ACK] Seq=0 Win=5792 Len=120 |
+| <span style="color:red">**54**</span> | 3.49316 | 203.0.113.0 | 192.0.2.1 | TCP | 54770 -> 443 [ACK] Seq=1 Win=5792 Len=0 |
+| <span style="color:green">**55**</span> | 3.544394 | 198.51.100.14 | 192.0.2.1 | TCP | 14785 -> 443 [SYN] Seq=0 Win=5792 Len=120 |
+| <span style="color:green">**56**</span> | 3.599628 | 192.0.2.1 | 198.51.100.14 | TCP | 443 -> 14785 [SYN, ACK] Seq=0 Win=5792 Len=120 |
+| <span style="color:red">**57**</span> | 3.664863 | 203.0.113.0 | 192.0.2.1 | TCP | 54770 -> 443 [SYN] Seq=0 Win=5792 Len=0 |
+| <span style="color:green">**58**</span> | 3.730096 | 198.51.100.14 | 192.0.2.1 | TCP | 14785 -> 443 [ACK] Seq=1 Win=5792 Len=120 |
+| <span style="color:red">**59**</span> | 3.795332 | 203.0.113.0 | 192.0.2.1 | TCP | 54770 -> 443 [SYN] Seq=0 Win=5792 Len=120 |
+| <span style="color:green">**60**</span> | 3.860567 | 198.51.100.14 | 192.0.2.1 | HTTP | GET /sales.html HTTP/1.1 |
+| <span style="color:red">**61**</span> | 3.939499 | 203.0.113.0 | 192.0.2.1 | TCP | 54770 -> 443 [SYN] Seq=0 Win=5792 Len=120 |
+| <span style="color:green">**62**</span> | 4.018431 | 192.0.2.1 | 198.51.100.14 | HTTP | HTTP/1.1 200 OK (text/html) |
+
 </details>
 
 ---
@@ -80,6 +78,7 @@ green,62,4.018431,192.0.2.1,198.51.100.14,HTTP ,HTTP/1.1 200 OK (text/html)
 1.  **Identificar o SYN Flood:** Aprendi a identificar visualmente um ataque de inundação de conexões através da repetição exaustiva de sinalizações `[SYN]` vindas de um mesmo endereço.
 2.  **Impacto nos usuários:** Compreendi como falhas de rede se traduzem em erros reais na tela do usuário, associando os pacotes `[RST, ACK]` e erros de *Gateway Time-out* à exaustão de recursos do servidor.
 3.  **Fragilidade da mitigação simples:** Entendi que bloquear apenas um IP no firewall é uma solução temporária, já que atacantes avançados podem realizar *IP spoofing* (falsificação de IP).
+
 
 ---
 📬 **Gostou do projeto? Vamos nos conectar!**
