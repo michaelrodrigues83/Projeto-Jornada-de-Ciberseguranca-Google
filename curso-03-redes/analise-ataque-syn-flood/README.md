@@ -31,7 +31,7 @@ Como parte da investigação, os registros de tráfego foram exportados e analis
 <details>
 <summary>🔍 Clique aqui para visualizar o registro bruto completo extraído (CSV)</summary>
 
-```text
+```
 No.,Time,Source,Destination ,Protocol,Info
 47,3.144521,198.51.100.23,192.0.2.1,TCP,42584->443 [SYN] Seq=0 Win-5792 Len=120...
 48,3.195755,192.0.2.1,198.51.100.23,TCP,"443->42584 [SYN, ACK] Seq=0 Win-5792 Len=120..."
