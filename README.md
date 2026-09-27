@@ -1,6 +1,16 @@
 # Relatório de Incidente de Segurança Cibernética: Análise de Tráfego de Rede
 
-> 🎓 **Nota de Contexto:** Este laboratório prático foi desenvolvido como parte do **Subcurso 3 Connect and Protect: Networks and Network Security (Conectar e Proteger: Redes em Segurança Cibernética)** do programa **Google Cybersecurity Professional Certificate**. O objetivo da atividade é simular a atuação de um analista de segurança na triagem de incidentes, análise de pacotes de rede e documentação técnica.
+> 🎓 **Nota de Contexto:** Este laboratório prático foi desenvolvido como parte do **Curso 3 Connect and Protect: Networks and Network Security (Conectar e Proteger: Redes em Segurança Cibernética)** do programa **Google Cybersecurity Professional Certificate**. O objetivo da atividade é simular a atuação de um analista de segurança na triagem de incidentes, análise de pacotes de rede e documentação técnica.
+
+---
+
+## 🛠️ Fundamentos Técnicos do Laboratório
+
+Antes de analisar o incidente, é fundamental compreender os pilares de rede envolvidos no diagnóstico:
+
+*   **tcpdump:** É uma ferramenta de linha de comando voltada para a análise de pacotes de rede (packet sniffer). Ela permite interceptar, capturar e exibir o tráfego de dados que passa por uma interface de rede, sendo essencial para identificar comportamentos anômalos e diagnosticar problemas de conectividade ou segurança.
+*   **UDP (User Datagram Protocol):** Um protocolo da camada de transporte que prioriza a velocidade em vez da confiabilidade, operando sem conexões prévias (connectionless). É o protocolo padrão para serviços que exigem respostas rápidas, como o **DNS (porta 53)**. No caso analisado, as requisições de resolução de nome do cliente utilizaram pacotes UDP.
+*   **ICMP (Internet Control Message Protocol):** Um protocolo da camada de rede utilizado por dispositivos (como roteadores e servidores) para enviar mensagens operacionais e relatórios de erro de envio. Quando um pacote UDP tenta acessar uma porta que está fechada ou inativa no destino, o protocolo ICMP entra em ação para devolver uma mensagem de erro — como o `port unreachable` (porta inalcançável) observado neste caso.
 
 ---
 
