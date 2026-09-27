@@ -24,4 +24,4 @@ O objetivo deste espaço é documentar o meu aprendizado prático em redes, sist
 ---
 📬 **Como entrar em contato:**
 * [Meu LinkedIn] (https://www.linkedin.com/in/michael-hernandes-rodrigues-4b092b283/)
-* [E-mail]: michael.rodrigues2312@gmail.com
+
