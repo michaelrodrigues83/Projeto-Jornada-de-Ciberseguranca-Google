@@ -12,7 +12,8 @@ Vários clientes relataram que não conseguiram acessar o site da empresa `www.y
 
 Abaixo está o registro bruto analisado durante a triagem do incidente:
 
-![Logs do tcpdump](logs-tcpdump.png)
+<img width="893" height="447" alt="image" src="https://github.com/user-attachments/assets/22e35f89-ae29-4b6f-8fa3-a5f5abf0a0da" />
+
 
 ---
 
