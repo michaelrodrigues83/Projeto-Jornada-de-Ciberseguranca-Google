@@ -11,6 +11,7 @@ O objetivo deste espaço é documentar o meu aprendizado prático em redes, sist
 ### 🌐 Curso 3: Conectar e Proteger: Redes em Segurança Cibernética
 *   [Análise de Tráfego de Rede com tcpdump](./curso-03-redes/analise-tcpdump/) — Investigação de incidentes de conectividade, análise de pacotes e diagnóstico de falhas nos protocolos UDP, DNS e ICMP.
 *   [Análise de Ataque SYN Flood com Wireshark](./curso-03-redes/analise-ataque-syn-flood/) — Identificação de ataques DoS na camada de transporte, análise de conexões incompletas e impacto em servidores web.
+*   [Estudo de Caso: Brute Force & Redirecionamento HTTP](./curso-03-redes/google-cybersecurity-incident-report/) — Análise de incidentes envolvendo quebra de credenciais padrão, injeção de scripts maliciosos (JavaScript) e análise cronológica de tráfego web.
 
 ### 🐧 Curso 4: Ferramentas do Ofício: Linux e SQL (Em breve)
 *   *As próximas atividades serão adicionadas aqui à medida que eu avançar no curso.*
